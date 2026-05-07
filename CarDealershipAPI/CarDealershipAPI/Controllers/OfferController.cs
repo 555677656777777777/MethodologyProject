@@ -107,7 +107,19 @@ namespace CarDealershipAPI.Controllers
         }
 
         // ═══ ADMIN: View all offers ═══
-        
+         // GET: /Offer/AllOffers
+        public IActionResult AllOffers()
+        {
+            if (GetUserRole() != "Admin") return RedirectToAction("Login", "Account");
+
+            var offers = _db.Offers
+                .Include(o => o.Car)
+                .Include(o => o.User)
+                .ToList();
+
+            ViewData["Title"] = "All Offers";
+            return View(offers);
+        }
 
 
         // ═══ ADMIN: Accept / Reject offer ═══
