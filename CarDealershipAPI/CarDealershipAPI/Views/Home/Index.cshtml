@@ -1,0 +1,50 @@
+@model List<Car>
+
+<!-- Hero Section -->
+<div class="av-hero av-animate">
+    <h1><i class="bi bi-car-front-fill"></i> Premium Cars</h1>
+    <p>Browse our curated collection of quality vehicles. Find your perfect ride today.</p>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="av-empty av-animate">
+        <i class="bi bi-car-front"></i>
+        <p>No cars available right now. Check back soon!</p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var car in Model)
+        {
+            <div class="col-md-6 col-lg-4 av-animate">
+                <div class="av-card h-100">
+                    <div class="d-flex justify-content-between align-items-start mb-3">
+                        <div>
+                            <div class="av-car-brand">@car.Brand</div>
+                            <div class="av-car-model">@car.Model</div>
+                        </div>
+                        <span class="av-car-year">@car.Year</span>
+                    </div>
+
+                    <div class="av-car-price mb-2">$@car.Price.ToString("N0")</div>
+
+                    <span class="av-badge @(car.IsAvailable ? "av-badge-available" : "av-badge-sold") mb-3 d-inline-block">
+                        @(car.IsAvailable ? "● Available" : "● Sold")
+                    </span>
+
+                    @if (car.IsAvailable && ViewData["UserRole"]?.ToString() == "Customer")
+                    {
+                        <div class="mt-3">
+                            <a asp-controller="Offer" asp-action="Create" asp-route-id="@car.Id"
+                               class="btn av-btn-accent btn-sm">
+                                <i class="bi bi-cash-coin me-1"></i> Make Offer
+                            </a>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}

@@ -1,0 +1,35 @@
+@model LoginDto
+
+<div class="av-auth-wrapper">
+    <div class="av-form-card av-animate">
+        <div class="av-auth-logo">
+            <i class="bi bi-car-front-fill"></i>
+            <h2>Welcome Back</h2>
+            <p>Sign in to your AutoVault account</p>
+        </div>
+
+        <form asp-action="Login" method="post">
+            @Html.AntiForgeryToken()
+
+            <div class="mb-3">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="Email" class="form-control" placeholder="you@example.com"
+                       value="@Model?.Email" required />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="Password" class="form-control" placeholder="••••••••" required />
+            </div>
+
+            <button type="submit" class="btn av-btn-accent w-100 py-2">
+                <i class="bi bi-box-arrow-in-right me-1"></i> Sign In
+            </button>
+        </form>
+
+        <div class="text-center mt-3" style="font-size:0.85rem; color:var(--av-muted)">
+            Don't have an account?
+            <a asp-action="Register" style="font-weight:600">Create one</a>
+        </div>
+    </div>
+</div>

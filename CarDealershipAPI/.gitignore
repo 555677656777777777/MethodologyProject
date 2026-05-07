@@ -1,0 +1,16 @@
+## Ignore Visual Studio files
+.vs/
+*.user
+
+## Ignore build output
+**/bin/
+**/obj/
+
+## Ignore database file
+*.db
+
+## Ignore local settings
+appsettings.Development.json
+
+## Ignore NuGet packages
+**/packages/

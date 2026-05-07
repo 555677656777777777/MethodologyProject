@@ -1,0 +1,99 @@
+@model List<Offer>
+
+<div class="av-page-header av-animate">
+    <h1><i class="bi bi-bar-chart me-2"></i>All Offers</h1>
+    <p>Review and manage customer offers</p>
+</div>
+
+@{
+    var pending = Model.Count(o => o.Status == "Pending");
+    var accepted = Model.Count(o => o.Status == "Accepted");
+    var rejected = Model.Count(o => o.Status == "Rejected");
+}
+
+<!-- Stats -->
+<div class="row g-3 mb-4 av-animate">
+    <div class="col-md-4">
+        <div class="av-stat">
+            <div class="av-stat-label">Pending</div>
+            <div class="av-stat-value text-warning">@pending</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="av-stat">
+            <div class="av-stat-label">Accepted</div>
+            <div class="av-stat-value text-success">@accepted</div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="av-stat">
+            <div class="av-stat-label">Rejected</div>
+            <div class="av-stat-value text-danger">@rejected</div>
+        </div>
+    </div>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="av-empty av-animate">
+        <i class="bi bi-clipboard"></i>
+        <p>No offers submitted yet.</p>
+    </div>
+}
+else
+{
+    <div class="av-table av-animate">
+        <table class="table table-dark table-borderless mb-0">
+            <thead>
+                <tr>
+                    <th>Customer</th>
+                    <th>Car</th>
+                    <th>Amount</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var offer in Model)
+                {
+                    var badgeClass = offer.Status switch
+                    {
+                        "Pending" => "av-badge-pending",
+                        "Accepted" => "av-badge-accepted",
+                        "Rejected" => "av-badge-rejected",
+                        _ => ""
+                    };
+                    <tr>
+                        <td>@offer.User?.Name</td>
+                        <td><strong>@offer.Car?.Brand @offer.Car?.Model</strong></td>
+                        <td>$@offer.Amount.ToString("N0")</td>
+                        <td><span class="av-badge @badgeClass">@offer.Status</span></td>
+                        <td>
+                            @if (offer.Status == "Pending")
+                            {
+                                <form asp-action="UpdateStatus" asp-route-id="@offer.Id" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="status" value="Accepted" />
+                                    <button type="submit" class="btn btn-outline-success btn-sm me-1">
+                                        <i class="bi bi-check-lg"></i> Accept
+                                    </button>
+                                </form>
+                                <form asp-action="UpdateStatus" asp-route-id="@offer.Id" method="post" class="d-inline">
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="status" value="Rejected" />
+                                    <button type="submit" class="btn btn-outline-danger btn-sm">
+                                        <i class="bi bi-x-lg"></i> Reject
+                                    </button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span style="color:var(--av-muted)">—</span>
+                            }
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

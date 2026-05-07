@@ -1,0 +1,54 @@
+@model List<Offer>
+
+<div class="av-page-header av-animate">
+    <h1><i class="bi bi-clipboard-check me-2"></i>My Offers</h1>
+    <p>Track all the offers you've submitted</p>
+</div>
+
+@if (Model.Count == 0)
+{
+    <div class="av-empty av-animate">
+        <i class="bi bi-clipboard"></i>
+        <p>You haven't made any offers yet.</p>
+        <a asp-controller="Home" asp-action="Index" class="btn av-btn-accent btn-sm mt-3">
+            <i class="bi bi-car-front me-1"></i> Browse Cars
+        </a>
+    </div>
+}
+else
+{
+    <div class="av-table av-animate">
+        <table class="table table-dark table-borderless mb-0">
+            <thead>
+                <tr>
+                    <th>Car</th>
+                    <th>Year</th>
+                    <th>Your Offer</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var offer in Model)
+                {
+                    <tr>
+                        <td><strong>@offer.Car?.Brand @offer.Car?.Model</strong></td>
+                        <td>@offer.Car?.Year</td>
+                        <td>$@offer.Amount.ToString("N0")</td>
+                        <td>
+                            @{
+                                var badgeClass = offer.Status switch
+                                {
+                                    "Pending" => "av-badge-pending",
+                                    "Accepted" => "av-badge-accepted",
+                                    "Rejected" => "av-badge-rejected",
+                                    _ => ""
+                                };
+                            }
+                            <span class="av-badge @badgeClass">@offer.Status</span>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

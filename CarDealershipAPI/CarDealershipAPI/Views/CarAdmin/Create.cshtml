@@ -1,0 +1,45 @@
+@model CarDto
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <a asp-action="Index" class="btn av-btn-outline btn-sm mb-4">
+            <i class="bi bi-arrow-left me-1"></i> Back to Cars
+        </a>
+
+        <div class="av-form-card av-animate" style="max-width:100%">
+            <h3 class="mb-4" style="font-weight:700"><i class="bi bi-plus-circle me-2"></i>Add New Car</h3>
+
+            <form asp-action="Create" method="post">
+                @Html.AntiForgeryToken()
+
+                <div class="mb-3">
+                    <label class="form-label">Brand</label>
+                    <input type="text" name="Brand" class="form-control" placeholder="e.g. Toyota"
+                           value="@Model?.Brand" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Model</label>
+                    <input type="text" name="Model" class="form-control" placeholder="e.g. Camry"
+                           value="@Model?.Model" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Price ($)</label>
+                    <input type="number" name="Price" class="form-control" placeholder="e.g. 25000"
+                           value="@Model?.Price" min="1" step="0.01" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Year</label>
+                    <input type="number" name="Year" class="form-control" placeholder="e.g. 2024"
+                           value="@Model?.Year" min="1900" max="2100" required />
+                </div>
+
+                <button type="submit" class="btn av-btn-accent w-100 py-2">
+                    <i class="bi bi-check-lg me-1"></i> Add Car
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

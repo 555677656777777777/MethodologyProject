@@ -1,0 +1,46 @@
+@{
+    var car = ViewData["Car"] as Car;
+}
+
+<div class="row justify-content-center">
+    <div class="col-lg-6">
+        <a asp-controller="Home" asp-action="Index" class="btn av-btn-outline btn-sm mb-4">
+            <i class="bi bi-arrow-left me-1"></i> Back to Cars
+        </a>
+
+        <div class="av-form-card av-animate" style="max-width:100%">
+            <h3 class="mb-4" style="font-weight:700"><i class="bi bi-cash-coin me-2"></i>Make an Offer</h3>
+
+            @if (car != null)
+            {
+                <div class="av-card mb-4" style="padding:16px">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <div class="av-car-brand">@car.Brand</div>
+                            <div class="av-car-model">@car.Model</div>
+                        </div>
+                        <div class="text-end">
+                            <div style="font-size:0.75rem; color:var(--av-muted)">Asking Price</div>
+                            <div class="av-car-price" style="font-size:1.3rem">$@car.Price.ToString("N0")</div>
+                        </div>
+                    </div>
+                </div>
+
+                <form asp-action="Create" asp-route-id="@car.Id" method="post">
+                    @Html.AntiForgeryToken()
+                    <input type="hidden" name="CarId" value="@car.Id" />
+
+                    <div class="mb-3">
+                        <label class="form-label">Your Offer Amount ($)</label>
+                        <input type="number" name="Amount" class="form-control"
+                               placeholder="Enter your offer" min="1" step="0.01" required />
+                    </div>
+
+                    <button type="submit" class="btn av-btn-accent w-100 py-2">
+                        <i class="bi bi-send me-1"></i> Submit Offer
+                    </button>
+                </form>
+            }
+        </div>
+    </div>
+</div>
